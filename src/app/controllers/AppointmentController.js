@@ -10,7 +10,7 @@ class AppointmentController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validação errada' });
+      return res.status(400).json({ error: 'Validação não combina' });
     }
 
     const { provider_id, date } = req.body;
