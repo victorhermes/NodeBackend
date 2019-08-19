@@ -20,7 +20,9 @@ class AppointmentController {
     });
 
     if (!isProvider) {
-      return res.status(401).json({ error: 'Não pode acessar' });
+      return res
+        .status(401)
+        .json({ error: 'Não tem acesso por não ser provider' });
     }
 
     const appointment = await Appointment.create({
