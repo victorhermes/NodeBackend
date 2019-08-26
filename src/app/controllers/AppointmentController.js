@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore, format } from 'date-fns';
+import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import Appointment from '../models/Appointments';
 import User from '../models/User';
@@ -98,6 +98,28 @@ class AppointmentController {
       content: `Novo agendamento de ${user.name} para o ${formatDate}`,
       user: provider_id,
     });
+
+    return res.json(appointment);
+  }
+
+  async delete(req, res) {
+    const appointment = await Appointment.findByPk(req.params.id);
+
+    if (appointment.user_id !== req.userId) {
+      return res.status(401).json({
+        error: 'Você não tem permissão para deletar esse agendamento',
+      });
+    }
+
+    const dateSub = subHours(appointment.date, 2);
+
+    if (isBefore(dateSub, new Date())) {
+      return res.json({ error: 'Você não pode mais cancelar o agendamento' });
+    }
+
+    appointment.canceled_at = new Date();
+
+    await appointment.save();
 
     return res.json(appointment);
   }
