@@ -79,11 +79,11 @@ class AppointmentController {
         .json({ error: 'Não tem acesso por não ser provider' });
     }
 
-    if (provider_id === req.userId) {
+    /* if (provider_id === req.userId) {
       return res
         .status(401)
         .json({ error: 'Você não pode agendar um horário para você mesmo' });
-    }
+    } */
 
     const appointment = await Appointment.create({
       user_id: req.userId,
