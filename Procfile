@@ -1,4 +1,4 @@
-web: npm install
-web: npm run build
-web: npx sequelize db:migrate
+release: npm install
+release: npm run build
+release: npx sequelize db:migrate
 web: npm start
